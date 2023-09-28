@@ -4,7 +4,7 @@
 
 <b>Most of the Cygnus pools so far relied on USDC to:</b>
 1. Price the liquidity deposited
-2. Lend and borrow using liquidity as collateral
+2. Lend and borrow USDC using liquidity as collateral
 
 <br />
 These new pools are a strategy that instead of relying on USDC and different strategies (such as depositing unused USDC on Compund, Aave, etc.), it relies solely on DAI and Savings DAI.
