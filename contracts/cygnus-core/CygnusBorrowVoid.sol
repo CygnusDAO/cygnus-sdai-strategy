@@ -120,15 +120,15 @@ contract CygnusBorrowVoid is ICygnusBorrowVoid, CygnusBorrowModel {
     /*  ────────────────────────────────────────────── Internal ───────────────────────────────────────────────  */
 
     /**
-     *  @notice Preview total balance from the Stargate strategy
+     *  @notice Preview total balance from the SDAI contract
      *  @notice Cygnus Terminal Override
      *  @inheritdoc CygnusTerminal
      */
     function _previewTotalBalance() internal view override(CygnusTerminal) returns (uint256 balance) {
-        // Get the balance of SDAI in this vault
+        // Get the balance of sDAI in this vault
         uint256 sDaiBalance = S_DAI.balanceOf(address(this));
       
-        // Return latest balance of Comet
+        // Return our balance of DAI given our balance of sDAI shares
         balance = S_DAI.convertToAssets(sDaiBalance);
     }
 
@@ -234,7 +234,7 @@ contract CygnusBorrowVoid is ICygnusBorrowVoid, CygnusBorrowModel {
      *  @inheritdoc CygnusTerminal
      */
     function _afterDeposit(uint256 assets) internal override(CygnusTerminal) {
-        // Supply USD to Comet
+        // Deposit DAI in sDAI vault and receive sDAI
         S_DAI.deposit(assets, address(this));
     }
 
@@ -247,7 +247,7 @@ contract CygnusBorrowVoid is ICygnusBorrowVoid, CygnusBorrowModel {
         // Convert assets to sDAI token rounding up
         uint256 sDaiAmount = assets.fullMulDivUp(S_DAI.totalSupply(), S_DAI.totalAssets());
 
-        // Withdraw sDAI amount and receive `assets`  of DAI
+        // Withdraw `sDaiAmount` of sDAI amount and receive `assets`  of DAI
         S_DAI.redeem(sDaiAmount, address(this), address(this));
     }
 
@@ -283,7 +283,7 @@ contract CygnusBorrowVoid is ICygnusBorrowVoid, CygnusBorrowModel {
      *  @custom:security only-admin 👽
      */
     function chargeVoid() external override cygnusAdmin {
-        // Allow Stargate router to use our USDC to deposits
+        // Allow sDAI contract to use our DAI
         underlying.safeApprove(address(S_DAI), type(uint256).max);
 
         /// @custom:event ChargeVoid
