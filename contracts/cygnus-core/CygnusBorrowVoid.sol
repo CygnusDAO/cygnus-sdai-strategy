@@ -64,7 +64,7 @@ contract CygnusBorrowVoid is ICygnusBorrowVoid, CygnusBorrowModel {
     /*  ──────── Strategy ────────  */
 
     /**
-     *  @notice CompoundV3's USDC
+     *  @notice Savings DAI ERC4626 contract
      */
     ISDai private constant S_DAI = ISDai(0x83F20F44975D03b1b09e64809B757c47f942BEeA);
 
